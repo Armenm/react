@@ -4,7 +4,9 @@ import './List.css';
 
 import { withStyles } from 'material-ui/styles';
 import GridList, { GridListTile } from 'material-ui/GridList';
+import Grid from 'material-ui/Grid';
 
+import SimpleMediaCard from './SimpleMediaCard.js';
 import Item from './Item.js';
 import AddGreeter from './AddGreeter.js';
 
@@ -18,7 +20,7 @@ const styles = theme => ({
   },
   gridList: {
     width: 500,
-    height: 450,
+    height: 300,
   },
   subheader: {
     width: '100%',
@@ -31,9 +33,8 @@ class List extends Component {
 	  super(props);
 	  this.state = { greetings: ['Jim', 'Sally'],
 	  				 pictures : [] };
-	  this.renderGreetings = this.renderGreetings.bind(this);
-	  this.renderGridList = this.renderGridList.bind(this);
 
+	  this.renderGridList = this.renderGridList.bind(this);
 
 	  this.addGreeting = this.addGreeting.bind(this);
 	  this.removeGreeting = this.removeGreeting.bind(this);
@@ -95,32 +96,27 @@ componentDidMount() {
   //   </ul>;
   // }
 
-  renderGreetings() {
+  renderGridList() {
   	
   console.log("state", this.state.pictures )
-	  return this.state.pictures.map(item => (
-	    <Item
-	      key={item.id}
-	      name={item.title}
-	      removeGreeting={this.removeGreeting}
-	    />
-	  ));
-	}
 
-	renderGridList() {
-
-		return (
+	return (
 
 	    <div>
-	      <GridList cellHeight={160} cols={3}>
+	      <Grid container className='typeContainer' spacing={16}>
 	        {this.state.pictures.map(item => (
-	          <GridListTile key={item.id} cols={item.cols || 1}>
-	            <img src={item.thumbnailUrl} alt={item.title} />
-	          </GridListTile>
+	        	<Grid item xs={3} zeroMinWidth >
+	          	<SimpleMediaCard key={item.id} item={item} />
+	          </Grid>
 	        ))}
-	      </GridList>
+	      
+	      </Grid>
 	    </div>
 	  );
+
+	  // return this.state.pictures.map(item => (
+	  //   <SimpleMediaCard/>
+	  // ));
 	}
 
   addGreeting(newName) {
