@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 
 import './List.css';
 
+
+import PropTypes from 'prop-types';
+
+
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+
 import { withStyles } from 'material-ui/styles';
 import GridList, { GridListTile } from 'material-ui/GridList';
 import Grid from 'material-ui/Grid';
@@ -9,6 +20,9 @@ import Grid from 'material-ui/Grid';
 import SimpleMediaCard from './SimpleMediaCard.js';
 import Item from './Item.js';
 import AddGreeter from './AddGreeter.js';
+
+
+import { InstantSearch, SearchBox } from 'react-instantsearch/dom';
 
 const styles = theme => ({
   root: {
@@ -25,12 +39,20 @@ const styles = theme => ({
   subheader: {
     width: '100%',
   },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
 });
 
 class List extends Component {
 
 	constructor(props) {
+
 	  super(props);
+
+	  const { classes } = props;
+
 	  this.state = { greetings: ['Jim', 'Sally'],
 	  				 pictures : [] };
 
@@ -71,8 +93,31 @@ componentDidMount() {
 	this.loadData();
 }
   render() {
+
+const { classes } = this.props;
     return (
     	<div className="List container row">
+    	<AppBar position="static">
+        <Toolbar>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            
+          </IconButton>
+          <Typography variant="title" color="inherit" className={classes.flex}>
+            Android stash
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+
+       <InstantSearch
+	    appId="latency"
+	    apiKey="3d9875e51fbd20c7754e65422f7ce5e1"
+	    indexName="bestbuy">
+	    <header>
+	    <SearchBox translastions={{placeholder:'Search'}} />
+	    </header>
+	  </InstantSearch>
+
     	{this.renderGridList()}
     </div>
     );
@@ -97,7 +142,7 @@ componentDidMount() {
   // }
 
   renderGridList() {
-  	
+
   console.log("state", this.state.pictures )
 
 	return (
@@ -132,4 +177,8 @@ componentDidMount() {
 
 }
 
-export default List;
+List.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(List);
